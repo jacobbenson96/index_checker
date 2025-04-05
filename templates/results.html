@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Checker</title>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    
+    <!-- jQuery + DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .download-btn {
+        padding: 8px 16px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .download-btn:hover {
+        background-color: #0056b3; /* darker blue on hover */
+    }
+
+        table {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Household Data</h1>
+
+    <a href="/download" class="download-link">
+        <button class="download-btn">
+            Download CSV
+        </button>
+    </a>
+    
+
+    <table id="placemarkTable" class="display">
+        <thead>
+            <tr>
+                {% for key in data[0].keys() %}
+                <th>
+                    {% if key == 'Name' %}
+                        Address
+                    {% elif key == 'Latitude' %}
+                        Lat
+                    {% elif key == 'Longitude' %}
+                        Lng
+                    {% else %}
+                        {{ key }}
+                    {% endif %}
+                </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                {% for value in row.values() %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            $('#placemarkTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [10, 25, 50, 100],
+                order: [], // Disable default sorting
+                responsive: true
+            });
+        });
+    </script>
+</body>
+</html>
